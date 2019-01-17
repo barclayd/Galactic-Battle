@@ -2,13 +2,13 @@ import turtle
 import random
 
 wn = turtle.Screen()
-wn.bgcolor("#0e202e")
+wn.bgcolor("#000")
 wn.bgpic("./img/space.gif")
 wn.title("Galactic Battle")
+wn.tracer(0)
 
 
 # classes
-
 class Border(turtle.Turtle):
 
     def __init__(self):
@@ -95,15 +95,14 @@ class Goal(turtle.Turtle):
         self.setheading(random.randint(0, 360))
 
 
-# sprites
-# wn.register_shape("spaceship.gif")
-
+# class instances
 player = Player()
-
 border = Border()
 
-goal = Goal()
-# player.shape("spaceship.gif")
+# multiple goals
+goals = []
+for count in range(6):
+    goals.append(Goal())
 
 # draw border
 border.draw_border()
@@ -120,8 +119,11 @@ wn.onkeypress(player.decrease_speed, "Down")
 
 # main game loop
 while True:
+    wn.update()
     player.move()
-    goal.move()
-    # check for collision between player and goal
-    player.collision_check(goal)
+    for goal in goals:
+        goal.move()
+        # check for collision between player and goal
+        player.collision_check(goal)
+
 
