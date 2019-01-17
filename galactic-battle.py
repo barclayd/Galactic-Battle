@@ -4,10 +4,30 @@ wn = turtle.Screen()
 wn.bgcolor("#0e202e")
 wn.bgpic("./img/space.gif")
 wn.title("Galactic Battle")
-wn.tracer(0)
 
 
 # classes
+
+class Border(turtle.Turtle):
+
+    def __init__(self):
+        turtle.Turtle.__init__(self)
+        self.penup()
+        self.hideturtle()
+        self.speed(0)
+        self.color("white")
+        self.pensize(5)
+
+    def draw_border(self):
+        self.penup()
+        self.setposition(-300, -300)
+        self.pendown()
+        self.setposition(-300, 300)
+        self.setposition(300, 300)
+        self.setposition(300, -300)
+        self.setposition(-300, -300)
+
+
 class Player(turtle.Turtle):
 
     def __init__(self):
@@ -20,11 +40,17 @@ class Player(turtle.Turtle):
     def move(self):
         self.forward(self.speed)
 
+        # border checking
+        if self.xcor() > 275 or self.xcor() < -275:
+            self.left(60)
+        if self.ycor() > 275 or self.ycor() < -275:
+            self.left(60)
+
     def turn_left(self):
-        self.left(90)
+        self.left(30)
 
     def turn_right(self):
-        self.right(90)
+        self.right(30)
 
     def increase_speed(self):
         self.speed += 1
@@ -37,7 +63,12 @@ class Player(turtle.Turtle):
 # sprites
 # wn.register_shape("spaceship.gif")
 player = Player()
+border = Border()
 # player.shape("spaceship.gif")
+
+# draw border
+border.draw_border()
+
 
 # key bindings
 wn.listen()
@@ -48,5 +79,4 @@ wn.onkeypress(player.decrease_speed, "Down")
 
 # main game loop
 while True:
-    wn.update()
     player.move()
