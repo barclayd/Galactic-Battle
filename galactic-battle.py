@@ -1,11 +1,16 @@
 import turtle
 import random
+import os
+import time
 
 wn = turtle.Screen()
 wn.bgcolor("#000")
 wn.bgpic("./img/space.gif")
 wn.title("Galactic Battle")
 wn.tracer(0)
+
+# register shapes
+wn.register_shape("./death_star.gif")
 
 
 # classes
@@ -57,6 +62,9 @@ class Game(turtle.Turtle):
         self.lives -= 1
         self.update_lives()
 
+    def play_sound(self, filename):
+        os.system("afplay {}&".format(filename))
+
 
 class Player(turtle.Turtle):
 
@@ -91,13 +99,17 @@ class Player(turtle.Turtle):
 
     def goal_collision_check(self, target):
         if self.distance(target) < 20:
+            game.play_sound("./collision.wav")
             goal.move_goal()
             game.change_score(1)
 
     def asteroid_collision_check(self, target):
         if self.distance(target) < 20:
+            game.play_sound("./explosion.wav")
             asteroid.move_goal()
             game.change_score(-5)
+            time.sleep(0.5)
+            self.setposition(0, 0)
 
 
 class Goal(turtle.Turtle):
@@ -135,7 +147,7 @@ class Asteroid(turtle.Turtle):
         self.speed(0)
         self.color("#5f4e43")
         self.speed = 6
-        self.shape("square")
+        self.shape("./death_star.gif")
         self.setposition(random.randint(-260, 260), random.randint(-260, 260))
         self.setheading(random.randint(0, 360))
         self.shapesize(2, 2)
