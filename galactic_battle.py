@@ -11,6 +11,7 @@ wn.tracer(0)
 
 # register shapes
 wn.register_shape("./death_star.gif")
+wn.register_shape("./wormhole.gif")
 
 
 # classes
@@ -120,7 +121,7 @@ class Goal(turtle.Turtle):
         self.speed(0)
         self.color("#ffbb7b")
         self.speed = 6
-        self.shape("circle")
+        self.shape("./wormhole.gif")
         self.setposition(random.randint(-260, 260), random.randint(-260, 260))
         self.setheading(random.randint(0, 360))
         self.shapesize(1.15, 1.15)
