@@ -29,6 +29,35 @@ class Border(turtle.Turtle):
         self.setposition(-300, -300)
 
 
+class Game(turtle.Turtle):
+
+    def __init__(self):
+        turtle.Turtle.__init__(self)
+        self.penup()
+        self.hideturtle()
+        self.speed(0)
+        self.color("white")
+        self.setposition(-290, 310)
+        self.score = 0
+        self.lives = 3
+
+    def update_score(self):
+        self.clear()
+        self.write("Score: {}".format(self.score), False, align="center", font=("Verdana", 14, "normal"))
+
+    def change_score(self, points):
+        self.score += points
+        self.update_score()
+
+    def update_lives(self):
+        self.clear()
+        self.write("Score: {}".format(self.lives), False, align="center", font="Verdana")
+
+    def change_lives(self):
+        self.lives -= 1
+        self.update_lives()
+
+
 class Player(turtle.Turtle):
 
     def __init__(self):
@@ -60,12 +89,15 @@ class Player(turtle.Turtle):
         if self.speed > 1:
             self.speed -= 1
 
-    def collision_check(self, target):
-        global score
+    def goal_collision_check(self, target):
         if self.distance(target) < 20:
-            score += 1
-            print("Player score: ", score)
             goal.move_goal()
+            game.change_score(1)
+
+    def asteroid_collision_check(self, target):
+        if self.distance(target) < 20:
+            asteroid.move_goal()
+            game.change_score(-5)
 
 
 class Goal(turtle.Turtle):
@@ -75,7 +107,7 @@ class Goal(turtle.Turtle):
         self.penup()
         self.speed(0)
         self.color("#ffbb7b")
-        self.speed = 3
+        self.speed = 6
         self.shape("circle")
         self.setposition(random.randint(-260, 260), random.randint(-260, 260))
         self.setheading(random.randint(0, 360))
@@ -95,20 +127,50 @@ class Goal(turtle.Turtle):
         self.setheading(random.randint(0, 360))
 
 
+class Asteroid(turtle.Turtle):
+
+    def __init__(self):
+        turtle.Turtle.__init__(self)
+        self.penup()
+        self.speed(0)
+        self.color("#5f4e43")
+        self.speed = 6
+        self.shape("square")
+        self.setposition(random.randint(-260, 260), random.randint(-260, 260))
+        self.setheading(random.randint(0, 360))
+        self.shapesize(2, 2)
+
+    def move(self):
+        self.forward(self.speed)
+
+        # border checking
+        if self.xcor() > 275 or self.xcor() < -275:
+            self.left(60)
+        if self.ycor() > 275 or self.ycor() < -275:
+            self.left(60)
+
+    def move_goal(self):
+        self.setposition(random.randint(-260, 260), random.randint(-260, 260))
+        self.setheading(random.randint(0, 360))
+
+
 # class instances
 player = Player()
 border = Border()
+game = Game()
+
 
 # multiple goals
 goals = []
 for count in range(6):
     goals.append(Goal())
 
+asteroids = []
+for count in range(4):
+    asteroids.append(Asteroid())
+
 # draw border
 border.draw_border()
-
-# scoring
-score = 0
 
 # key bindings
 wn.listen()
@@ -124,6 +186,10 @@ while True:
     for goal in goals:
         goal.move()
         # check for collision between player and goal
-        player.collision_check(goal)
+        player.goal_collision_check(goal)
+    for asteroid in asteroids:
+        asteroid.move()
+        # check for collision between player and goal
+        player.asteroid_collision_check(asteroid)
 
 
