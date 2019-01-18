@@ -4,6 +4,13 @@ Space themed game built using Python
 
 Fly down the wormholes and avoid the Death Stars to guarantee your safety!
 
+### Demo
+
+![Game play](https://user-images.githubusercontent.com/39765499/51396810-c132e480-1b37-11e9-90a8-01f866c4b4e8.gif)
+
+<img width="832" alt="Gameplay" src="https://user-images.githubusercontent.com/39765499/51396768-a5c7d980-1b37-11e9-8f0a-ff12e5d2b5b2.png">
+
+
 ### How to Run (Mac & Linux)
 
 ````
